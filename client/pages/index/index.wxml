@@ -1,59 +1,50 @@
 <!--index.wxml-->
-<view class="container">
-    <!-- 用户登录测试 -->
-    <view class="userinfo" bindtap="login">
-        <image
-            class="userinfo-avatar"
-            src="{{logged ? userInfo.avatarUrl : './user-unlogin.png'}}"
-            background-size="cover"
-        ></image>
-        <view>
-            <text class="userinfo-nickname">{{logged ? userInfo.nickName : '点击测试登录接口'}}</text>
-            <text class="userinfo-nickname" wx:if="{{logged}}">{{userInfo.lastLoginTime}}</text>
-        </view>
+<import src="../movies/movie-list/movie-list-template.wxml" />
+<import src="../movies/movie-grid/movie-grid-template.wxml" />
+<view class='customSwiper'>
+  <swiper class='banner' autoplay='true' interval='5000' duration='300' bindchange='switchTab'>
+    <block wx:for="{{sliderList}}" wx:key="key">
+      <swiper-item>
+        <image style='width:100%;height:100%;' src="{{item.imageSource}}"></image>
+      </swiper-item>
+    </block>
+  </swiper>
+  <view class="tab">
+    <block wx:for="{{sliderList}}" wx:key="key">
+      <view wx:if="{{item.selected}}" class='tab-item selected'>{{index+1}}</view>
+      <view wx:else class="tab-item">{{index+1}}</view>
+    </block>
+  </view>
+</view>
+<view class="index">
+  <!--<text>点击地名以更换城市</text>-->
+  <view class="hotcity-common" style="display:inline;">当前位置: </view>
+  <view class="thisCityName">{{location}}{{county}}</view>
+  <view class="thisCityName" bindtap="jump">
+    <icon type="download" size="18" color='#2a579a' class='changeCity'/>
+    <text>更改定位</text>  
+  </view>
+  <view class="weatherwrap" bindtap='gotoWeather'>
+    <!--显示当天的天气信息-->
+    <view class="info">
+      <!--城市名称 当前日期-->
+      <view class="city">{{location}} ({{today}})</view>
+      <!--当天温度-->
+      <view class="temp">{{weatherData.tmp}}℃</view>
+      <!--其他描述-->
+      <view class="weather">
+        <view>{{weatherData.cond_txt}}</view>
+        <view>{{weatherData.wind_dir}}</view>
+        <view>{{weatherData.wind_sc}}</view>
+        <view>PM2.5: {{air.pm25}}</view>
+        <view>{{air.qlty}}</view>
+      </view>
+      <view class="life" style='text-indent:1em;'>{{dress.txt}}</view>
     </view>
-
-    <!-- 信道连接测试 -->
-    <view class="tunnel">
-        <view class="tunnel-text uploader-text">
-            <text bindtap="doRequest">请求（是否带有登陆态）</text>
-            <switch class="tunnel-switch" bindchange="switchRequestMode" color="#007AFF"/>
-        </view>
-        <view class="tunnel-text" wx:if="{{requestResult}}">
-            <text class="request-text">{{'请求结果：' + requestResult}}</text>
-        </view>
+  </view>
+  <view class="container" wx:if="{{containerShow}}">
+    <view class="movies-template">
+      <template is="movieListTemplate" data="{{...inTheaters}}" />
     </view>
-
-    <!-- 上传图片测试 -->
-    <view class="uploader">
-        <view class="uploader-text" bindtap="doUpload">
-            <text>上传图片</text>
-        </view>
-        <view class="uploader-container" wx:if="{{imgUrl}}">
-            <image
-                class="uploader-image"
-                src="{{imgUrl}}"
-                mode="aspectFit"
-                bindtap="previewImg"
-            ></image>
-        </view>
-    </view>
-
-    <!-- 信道连接测试 -->
-    <view class="tunnel">
-        <view class="tunnel-text">
-            <text>信道</text>
-            <switch class="tunnel-switch" bindchange="switchChange" color="#007AFF"/>
-        </view>
-        <view class="tunnel-text {{ tunnelStatus && tunnelStatus === 'connected' ? 'active' : 'disable' }}" bindtap="sendMessage">
-            <text>发送消息</text>
-        </view>
-    </view>
-
-    <!-- 上传图片测试 -->
-    <view class="uploader">
-        <navigator url="../addCgi/addCgi" open-type="navigate" class="uploader-text">
-            <text>快速增加 CGI</text>
-        </navigator>
-    </view>
+  </view>
 </view>
