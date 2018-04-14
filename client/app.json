@@ -39,10 +39,6 @@
       {
         "pagePath": "pages/news/news",
         "text": "新闻"
-      },
-      {
-        "pagePath": "pages/more/more",
-        "text": "更多"
       }
     ]
   }

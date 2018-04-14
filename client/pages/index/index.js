@@ -32,6 +32,7 @@ Page({
     //获取豆瓣电影正在热映信息
     var inTheatersUrl = app.globalData.doubanBase +
       "/v2/movie/in_theaters" + "?start=0&count=6";
+    // cnsole.log(inTheatersUrl);
     this.getMovieListData(inTheatersUrl, "inTheaters", "正在热映");
 
     //获取用户信息
